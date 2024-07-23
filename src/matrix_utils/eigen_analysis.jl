@@ -70,30 +70,7 @@ function compute_average_eigvals(m::Matrix{Float64},l::Int64; drop_first=true::B
 end
 
 """
-    intercept_and_exponent(x::Vector{Float64}, y::Vector{Float64})::Vector{Float64}
-
-Compute the intercept and exponent for a linear fit between `x` and `y`.
-
-# Arguments
-- `x::Vector{Float64}`: Vector of independent variable values.
-- `y::Vector{Float64}`: Vector of dependent variable values.
-
-# Returns
-- `params::Vector{Float64}`: Vector containing the intercept and exponent.
-
-# Example
-```julia
-x_values = [1.0, 2.0, 3.0]
-y_values = [0.1, 0.2, 0.3]
-intercept_and_exponent(x_values, y_values)```
-"""
-function intercept_and_exponent(x::Vector{Float64},y::Vector{Float64})::Vector{Float64}
-   data = DataFrame(X=x,Y=y)
-   return GLM.coef(GLM.lm(@formula(Y ~ X), data))
-end
-
-"""
-    compute_linear_fit_params(eigvals::Array{Float64,1})::Vector{Float64}
+   compute_linear_fit_params(eigvals::Array{Float64,1})::Vector{Float64}
 
 Compute the parameters of a linear fit for a given array of eigenvalues.
 

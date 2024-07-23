@@ -1,9 +1,12 @@
 """
-    plot_psd(destination_dir::AbstractString)
+    function plot_psd(x::Vector{Float64}, 
+            destination_dir::String, 
+            A::Float64, 
+            beta::Float64)
 
 Plots the psd associated with a complex array of numbers in log-log scale, highlighting the linear fit in black
 """
-function plot_psd(x::Array{Float64,1}, destination_dir::String, A::Float64, beta::Float64)
+function plot_psd(x::Vector{Float64}, destination_dir::String, A::Float64, beta::Float64)
     rfft_arr = rfft(x)
     f = sampling_freq_arr(length(x))
     
@@ -12,19 +15,14 @@ function plot_psd(x::Array{Float64,1}, destination_dir::String, A::Float64, beta
 
     params = intercept_and_exponent(f,psd)
     
-    full_file_path = destination_dir
+    full_file_path = joinpath(destination_dir,"psd_log_A_$(replace(string(round(A,digits=2)),"." => "_"))_beta_$(replace(string(round(beta,digits=2)),"." => "_")).pdf")
     if !isfile(full_file_path)
         #plot styling
         plt = plot(f,psd, label=L"PSD \ \left( f \right)", legend=false, xscale=:log10, yscale=:log10,alpha=0.2) #plot reference 
-        round(log10(A),digits=2) == round(params[1],digits=2)
-        round(beta,digits=2) == round(params[2],digits=2)
-
         #expected linear fit
         plot!((u) -> exp10(log10(A)-beta*log10(u)), minimum(f), maximum(f), xscale=:log10,yscale=:log10,lc=:black)
-        #linear fit
-        plot!((u) -> exp10(params[1] + params[2]*log10(u)),minimum(f),maximum(f), xscale=:log10,yscale=:log10,lc=:red)
         
-        title!("PSD for ts with logA = $A and beta = $beta")
+        title!("PSD for ts with A = $A and beta = $beta")
         xlabel!(L"f")
         ylabel!("power density spectra")
         

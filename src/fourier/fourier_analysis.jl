@@ -1,8 +1,3 @@
-using FFTW
-using Plots
-using LaTeXStrings
-
-
 function compute_psd(arr::Vector{T})::Vector{Float64} where T <: Complex 
     squared_norms = Array{Float64}[]
     squared_norms = abs2.(arr)

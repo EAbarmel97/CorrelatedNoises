@@ -15,7 +15,7 @@ Embed a matrix `m` in a row space of specified dimension.
 matrix = [1.0 2.0; 3.0 4.0]
 embedd_matrix_in_row_space(matrix, 3)```
 """
-function embedd_matrix_in_row_space(m::Matrix{Float64},row_dim)::Matrix{Float64}
+function embedd_matrix_in_row_space(m::Matrix{Float64},row_dim::Int64)::Matrix{Float64}
     if size(m)[1] > row_dim
         @error "the row dimension need to be smaller"
     end
@@ -107,7 +107,6 @@ function filter_singular_vals_array(m::Matrix{Float64}; atol=eps(Float64)::Float
     singular_vals = LinearAlgebra.svd(m).S  
     return filter(u -> u > atol, singular_vals)
 end
-
 
 """
     heatmap_plot(cm::Matrix{Float64}; dir_to_save="."::String)
