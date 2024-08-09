@@ -55,8 +55,3 @@ function intercept_and_exponent(x::Vector{Float64},y::Vector{Float64})::Vector{F
    data = DataFrame(X=x,Y=y)
    return GLM.coef(GLM.lm(@formula(Y ~ X), data))
 end
-
-
-function movingaverage(ts::Vector{Float64})::Vector{Float64}
-   return 
-end
