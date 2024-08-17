@@ -27,3 +27,8 @@ function mean_psd(psd_array::Vector{Vector{Float64}})::Vector{Float64}
 
     return sum/length(psd_array)
 end
+
+function linear_fit_log_psd(psd::Vector{Float64}, ts_length::Int64)::Vector{Float64}
+   f = rfftfreq(ts_length)[2:end]
+   return intercept_and_exponent(log10.(f), log10.(psd[2:end]))
+end

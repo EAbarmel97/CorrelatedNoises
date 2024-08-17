@@ -4,7 +4,7 @@ function plot_traze(dir_to_save::String, time_series::Vector{Float64}, A::Float6
     x = collect(0:(length(time_series)-1))
     
     plt = plot(x,time_series, label= L"X_n") #plot reference 
-    title!("A = $A, beta = $beta")
+    title!("correlated noise time series generated beta = $beta"; titlefontszie=12)
     hline!(plt, [avg, avg], label=L"\overline{X}_n",linewidth=3)
     #ylims!(-1.0, 1.0)
     xlims!(0, length(time_series))

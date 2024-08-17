@@ -16,7 +16,6 @@ plot_eigen_spectrum(matrix, 5, "type_A")```
 function plot_eigen_spectrum(m::Matrix{Float64}, l::Int64, beta::Float64; dir_to_save::String = ".")
     rp = row_partition(size(m)[1],l)
 
-
     beta_str = round(string(beta),digits=2)
     full_file_path = joinpath(dir_to_save,"eigen_spectra_corrnoise_beta$(beta_str).pdf")
 
@@ -43,7 +42,7 @@ function plot_eigen_spectrum(m::Matrix{Float64}, l::Int64, beta::Float64; dir_to
                 ev = 1/(l - 1) .* abs2.(LinearAlgebra.svd(m[rp[i-1]+1:rp[i],:]).S)
                 plot!(collect(1:length(ev)), ev, xscale=:log10, yscale=:log10, alpha=0.2, lc=:grey, label="")
             end
-        end  
+        end 
 
         title!("Eigen spectrum plot")
         xlabel!("rank")

@@ -29,36 +29,6 @@ function embedd_matrix_in_row_space(m::Matrix{Float64},row_dim::Int64)::Matrix{F
     return embedded_matrix    
 end
 
-"""
-    row_partition(r::Int64, l::Int64)::Vector{Int64}
-
-Partition the rows of a matrix into equal-sized blocks.
-
-# Arguments
-- `r::Int64`: Total number of rows.
-- `l::Int64`: Size of each block.
-
-# Returns
-- `row_partition::Vector{Int64}`: Vector containing the partitioned row indices.
-
-# Example
-```julia
-row_partition(10, 3)
-```
-"""
-function row_partition(r::Int64,l::Int64)::Vector{Int64}
-    row_partition = map(collect(1:div(r,l))) do u 
-        return l*u
-    end
-
-    if r % l != 0
-        push!(row_partition, r)
-        return row_partition
-    end
-
-    return row_partition
-end
-
 function centralize_matrix(M::Matrix{Float64})::Matrix{Float64}
     mean_by_row = mean.(eachrow(M)) 
     return M .- mean_by_row

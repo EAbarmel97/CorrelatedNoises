@@ -5,7 +5,7 @@ JULIA_DEPOT_PATH := $(shell pwd)/.julenv
 
 UPDATE_PROJECT_TOML := cp $(JULIA_DEPOT_PATH)/Project.toml Project.toml
 
-DELETE_GRAPHS := rm -rf plots/*
+DELETE_GRAPHS := rm -rf plots/* && rm -rf plots/plot_beta_beta_fit/*
 
 # Custom shell command to add a package from the environment and update Project.toml
 ADD_AND_UPDATE := julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.add("$(ARG)");' && $(UPDATE_PROJECT_TOML)
@@ -33,10 +33,13 @@ instantiate:
 precompile:
 	@julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.precompile()'
 
-run: 
-	@julia --project=$(JULIA_DEPOT_PATH) main.jl $(ARGS)
+plot_trazes_and_psd: 
+	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_trazes_and_psd.jl $(ARGS)
+
+plot_beta_beta_fit: 
+	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_beta_beta_fits.jl $(ARGS)
 
 cleanup:
 	   $(DELETE_GRAPHS)
 
-.PHONY: julia_env add_to_env rm_from_env instantiate precompile cleanup
+.PHONY: julia_env add_to_env rm_from_env instantiate precompile plot_trazes_and_psd plot_beta_beta_fit cleanup
