@@ -5,7 +5,7 @@ JULIA_DEPOT_PATH := $(shell pwd)/.julenv
 
 UPDATE_PROJECT_TOML := cp $(JULIA_DEPOT_PATH)/Project.toml Project.toml
 
-DELETE_GRAPHS := rm -rf plots/* && rm -rf plots/plot_beta_beta_fit/*
+DELETE_GRAPHS := rm plots/corr_noise_* && rm plots/psd_logscale_* && rm plots/beta_beta_fit/from_*_to_*
 
 # Custom shell command to add a package from the environment and update Project.toml
 ADD_AND_UPDATE := julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.add("$(ARG)");' && $(UPDATE_PROJECT_TOML)

@@ -1,5 +1,13 @@
+#julia project
 **/src/Manifest.toml 
 **/src/Project.toml
+
+#plots files and subfdirs 
+plots/corr_noise_*
+plots/psd_logscale_*
+plots/beta_beta_fit/from_*_to_*
+
+#vsc files
 .julenv
 .vscode
 .env

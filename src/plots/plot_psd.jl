@@ -68,7 +68,7 @@ function plot_beta_beta_fit(from_beta::Float64, to_beta::Float64, delta::Float64
             rfft_ts = rfft(time_series)
             psd = compute_psd(rfft_ts)
             linear_fit_log_psd(psd, length(time_series))
-            push!(beta_fits, linear_fit_log_psd(psd,length(time_series))[2])
+            push!(beta_fits, -1*linear_fit_log_psd(psd,length(time_series))[2])
         end
 
         beta_beta_fit_dict[beta] = beta_fits
@@ -81,9 +81,9 @@ function plot_beta_beta_fit(from_beta::Float64, to_beta::Float64, delta::Float64
 
     if !isfile(full_file_path)
         #plot styling
-        plt = plot(betas, mean_beta_fits, yerror = std_dev_beta_fits, label=L"PSD \ \left( f \right)", xscale=:log10, yscale=:log10,alpha=0.2) #plot reference
+        plt = plot(betas, mean_beta_fits, yerror = std_dev_beta_fits, label=L"PSD \ \left( f \right)", lc=:blue ) #plot reference
         #linear fit
-        plot!((u) -> exp(u), label = "identity func", exp10(betas[1]), exp10(betas[end]), xscale=:log10,yscale=:log10,lc=:red)
+        plot!((u) -> u, label = "identity func", betas[1], betas[end], alpha=0.5, lc=:red)
 
         title!("PSD for ts from beta = $(from_beta) to beta = $(to_beta)"; titlefontsize=12)
         xlabel!(L"f")
@@ -91,5 +91,5 @@ function plot_beta_beta_fit(from_beta::Float64, to_beta::Float64, delta::Float64
         
         #file saving
         savefig(plt, full_file_path)
-    end   
+    end
 end
