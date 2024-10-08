@@ -1,9 +1,10 @@
 # Define the directory for the Julia environment
 JULIA_DEPOT_PATH := $(shell pwd)/.julenv
 
-UPDATE_PROJECT_TOML := cp $(JULIA_DEPOT_PATH)/Project.toml Project.toml
+DELETE_GRAPHS := rm plots/corr_noise_* && rm plots/psd_logscale_* && rm plots/beta_beta_fit/from_*_to_*  
 
-DELETE_GRAPHS := rm plots/corr_noise_* && rm plots/psd_logscale_* && rm plots/beta_beta_fit/from_*_to_*
+# Update Project.toml
+UPDATE_PROJECT_TOML := cp $(JULIA_DEPOT_PATH)/Project.toml Project.toml
 
 # Custom shell command to add a package from the environment and update Project.toml
 ADD_AND_UPDATE := julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.add("$(ARG)");' && $(UPDATE_PROJECT_TOML)
@@ -25,19 +26,21 @@ rm_from_env:
 
 # Target to resolve dependencies and instantiate the environment
 instantiate:
+	@julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.instantiate()'
+	cp Project.toml $(JULIA_DEPOT_PATH)/Project.toml
 	@julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'
 
 # Target to precompile packages in the environment
 precompile:
 	@julia --project=$(JULIA_DEPOT_PATH) -e 'using Pkg; Pkg.precompile()'
 
-plot_trazes_and_psd: 
-	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_trazes_and_psd.jl $(ARGS)
+plot_traces_and_psd:                                                         
+	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_traces_and_psd.jl $(ARGS)    
+                                                                             
+plot_beta_beta_fit:                                                          
+	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_beta_beta_fits.jl $(ARGS)    
+                                                                             # Target to precompile packages in the environment
+cleanup:                                                                     
+	   $(DELETE_GRAPHS)                                                        
 
-plot_beta_beta_fit: 
-	@julia --project=$(JULIA_DEPOT_PATH) cli/plot_beta_beta_fits.jl $(ARGS)
-
-cleanup:
-	   $(DELETE_GRAPHS)
-
-.PHONY: julia_env add_to_env rm_from_env instantiate precompile plot_trazes_and_psd plot_beta_beta_fit cleanup
+.PHONY: julia_env add_to_env rm_from_env instantiate precompile plot_traces_and_psd plot_beta_beta_fit cleanup
